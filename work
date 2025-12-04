@@ -1,46 +1,24 @@
--- 1) Rows with a justification
 SELECT 
-    j.id::text        AS justif_id,
-    j.libelle::text   AS label,
-    COUNT(*)::bigint  AS nombre
+    j.id::text AS justif_id,
+    j.libelle::text AS label,
+    COUNT(*)::bigint AS nombre
 FROM spc_ope_match m
-JOIN spc_ecart e
-  ON m.ecart_id = e.id
-LEFT JOIN spc_justificatif j
+LEFT JOIN spc_ecart e 
+  ON m.ecart_id = e.id         -- LEFT JOIN, NOT JOIN
+LEFT JOIN spc_justificatif j 
   ON e.justificatif::bigint = j.id
-WHERE m.lot_id = 3764          -- same LOT as Oracle
+WHERE m.lot_id = 3764
 GROUP BY j.id, j.libelle
 
 UNION ALL
 
--- 2) "Non justifié" rows (ECART_ID = 0, status P, OSMP)
 SELECT
-    '0'::text               AS justif_id,
-    '[Non justifié]'::text  AS label,
-    COUNT(*)::bigint        AS nombre
+    '0'::text AS justif_id,
+    '[Non justifié]'::text AS label,
+    COUNT(*)::bigint AS nombre
 FROM spc_ope_match m
-WHERE m.lot_id  = 3764
+WHERE m.lot_id = 3764
   AND m.ecart_id = 0
-  AND m.statut   = 'P'
+  AND m.statut = 'P'
   AND m.type_match = 'OSMP'
 GROUP BY justif_id, label;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-SELECT id, ecart_id, statut, type_match
-FROM spc_ope_match
-WHERE lot_id = 3764;
