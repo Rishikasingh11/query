@@ -5,13 +5,13 @@ SELECT
     COUNT(*) AS nombre
 FROM SPC_OPE_MATCH m
 JOIN SPC_ECART e ON m.ECART_ID = e.ID
-LEFT JOIN SPC_JUSTIFICATIF j ON e.JUSTIFICATIF = j.ID
+LEFT JOIN SPC_JUSTIFICATIF j ON e.JUSTIFICATIF::bigint = j.ID
 WHERE m.LOT_ID = '3764'
 GROUP BY j.id, j.libelle
 
 UNION ALL
 
--- Second part (no change except proper aliases)
+-- Second part
 SELECT 
     0 AS id,
     '[Non justifié]' AS libelle,
