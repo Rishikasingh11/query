@@ -24,3 +24,23 @@ WHERE m.lot_id  = 3764
   AND m.statut   = 'P'
   AND m.type_match = 'OSMP'
 GROUP BY justif_id, label;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SELECT id, ecart_id, statut, type_match
+FROM spc_ope_match
+WHERE lot_id = 3764;
