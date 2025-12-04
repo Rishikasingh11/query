@@ -1,17 +1,20 @@
+-- ✔️ Part 1: Only justified rows (like Oracle)
 SELECT 
     j.id::text AS justif_id,
     j.libelle::text AS label,
     COUNT(*)::bigint AS nombre
 FROM spc_ope_match m
-LEFT JOIN spc_ecart e 
-  ON m.ecart_id = e.id         -- LEFT JOIN, NOT JOIN
-LEFT JOIN spc_justificatif j 
-  ON e.justificatif::bigint = j.id
+LEFT JOIN spc_ecart e ON m.ecart_id = e.id
+LEFT JOIN spc_justificatif j ON e.justificatif::bigint = j.id
 WHERE m.lot_id = 3764
+  AND m.ecart_id <> 0            -- Oracle behaviour
+  AND m.statut = 'P'             -- Oracle behaviour
+  AND m.type_match = 'OSMP'      -- Oracle behaviour
 GROUP BY j.id, j.libelle
 
 UNION ALL
 
+-- ✔️ Part 2: Non justifié (ECART_ID = 0)
 SELECT
     '0'::text AS justif_id,
     '[Non justifié]'::text AS label,
